@@ -3,9 +3,22 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
+    <android.support.design.widget.TabLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/tab_emotion_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="1"/>
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        app:tabIndicatorColor="@color/red"
+        app:tabIndicatorHeight="1dp"/>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp_emotion_pager"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+
 
 </LinearLayout>
