@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    * 宫格头像信息
+    * 如：首页、首页更多、
+-->
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <com.app.zym.fragmentdemo.view.RoundImageView
+        xmlns:riv="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/iv_icon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_launcher"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        riv:type="round"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_head_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:background="@drawable/translucent_bottom_round"
+        android:visibility="visible"
+        android:layout_alignBottom="@+id/iv_icon">
+
+        <TextView
+            android:id="@+id/tv_age"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            tools:text="24岁" />
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:gravity="center_vertical|right"
+            android:ellipsize="end"
+            android:maxLines="1"
+            tools:text="金茗希" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

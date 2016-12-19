@@ -7,7 +7,7 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/one_px"
+        android:layout_height="@dimen/one_dp"
         android:visibility="gone"
         android:background="@color/red" />
 

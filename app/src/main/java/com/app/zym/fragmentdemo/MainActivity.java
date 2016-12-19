@@ -2,12 +2,15 @@ package com.app.zym.fragmentdemo;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.app.zym.fragmentdemo.application.MainApplication;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -122,6 +125,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case 2:
                 ibtn2.setImageResource(R.mipmap.app_bottom_three_selected);
                 tvToolbarTitle.setText("消息");
+                if(!MainApplication.isLogin()){
+                    Intent intent = new Intent(MainActivity.this, LoginDemo.class);
+                    startActivity(intent);
+                    return;
+                }
                 if (f2 == null) {
                     f2 = new Fragment2();
                     ft.add(R.id.fl_frame, f2);

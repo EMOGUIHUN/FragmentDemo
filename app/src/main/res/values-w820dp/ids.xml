@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="radar_id_scan_circle" type="id"/>
+
+    <!--BaseRVAdapter tag key-->
+    <item name="tag_position_key" type="id"/>
+    <item name="tag_item_key" type="id"/>
+
+</resources>
