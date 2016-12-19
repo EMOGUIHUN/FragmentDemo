@@ -29,22 +29,23 @@ import java.util.List;
 
 public class Fragment0 extends Fragment implements OKHttpRequest.AsyncRequest {
     private OKHttpRequest ohr;
-    private RecyclerView rvView;
     private List<OneInfo> mlist;
     private FragmentAdapter mAdapter;
+    private RecyclerView rvView;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_0, container, false);
-        ohr = new OKHttpRequest(this);
+        View view = inflater.inflate(R.layout.fragment_0,container,false);
         rvView = (RecyclerView) view.findViewById(R.id.rv_main);
+        ohr = new OKHttpRequest(this);
         sendRequest();
         mlist = new ArrayList<>();
-        int [] layouts = new int[]{R.layout.fragment_ont_item_title,R.layout.fragment_one_item_head};
+        int[] layouts = new int[]{R.layout.fragment_ont_item_title,R.layout.fragment_one_item_head};
         mAdapter = new FragmentAdapter(getActivity(),mlist,layouts);
         mAdapter.setLayoutType(0,3);
-        rvView.addItemDecoration(new  RVSpaceItemDecoration(5));
-        GridLayoutManager gridLayoutManager =new  GridLayoutManager(getActivity(),3);
+        rvView.addItemDecoration(new RVSpaceItemDecoration(5));
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),3);
         rvView.setLayoutManager(gridLayoutManager);
         rvView.setItemAnimator(new DefaultItemAnimator());
         rvView.setHasFixedSize(true);
@@ -70,31 +71,30 @@ public class Fragment0 extends Fragment implements OKHttpRequest.AsyncRequest {
         if(TextUtils.isEmpty(json)){
             return;
         }
-        if(tag ==0){
+        if(tag==0){
             try {
-                JSONObject obj  = new JSONObject(json);
+                JSONObject obj = new JSONObject(json);
                 if(obj.has("meinv")){
-                    JSONArray array = obj.getJSONArray("meinv");
-                    if(array==null){
+                    JSONArray arrays = obj.getJSONArray("meinv");
+                    if(arrays ==null){
                         return;
                     }
-                    for(int i = 0;i<array.length();i++){
-                        JSONObject objs = array.getJSONObject(i);
-                        if(objs.has("title")){
-                            OneInfo oi = new OneInfo();
-                            oi.title = objs.getString("title");
-                            mlist.add(oi);
+                    List<OneInfo> listTitle = new ArrayList<>();
+                    for(int i = 0;i<arrays.length();i++){
+                        JSONObject itemObj = arrays.getJSONObject(i);
+                        if(itemObj.has("title")){
+                            OneInfo titleOne = new OneInfo();
+                            titleOne.title = itemObj.getString("title");
+                            mlist.add(titleOne);
                         }
-                        if(objs.has("list")){
-                            JSONArray arrays = objs.getJSONArray("list");
-                            if(arrays==null){
+                        if(itemObj.has("list")){
+                            JSONArray array = itemObj.getJSONArray("list");
+                            if(array==null){
                                 return;
                             }
-                            for(int j = 0;j<arrays.length();j++){
-                                JSONObject itemObj = arrays.getJSONObject(j);
-                                OneInfo oi = new OneInfo();
-                                if(itemObj.has("header")) oi.head = itemObj.getString("header");
-                                if(itemObj.has("name")) oi.name = itemObj.getString("name");
+                            for(int j = 0;j<array.length();j++){
+                                JSONObject objss = array.getJSONObject(j);
+                                OneInfo oi = new OneInfo(objss);
                                 mlist.add(oi);
                             }
                         }
