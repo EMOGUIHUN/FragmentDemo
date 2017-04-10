@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="100dp">
+        <com.app.zym.fragmentdemo.view.RoundImageView
+            xmlns:riv="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/riv_head"
+            android:layout_marginBottom="@dimen/app_main_ome"
+            android:layout_marginLeft="@dimen/app_main_ome"
+            android:layout_marginTop="@dimen/app_main_ome"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@mipmap/as"
+            riv:borderRadius="8dp"
+            riv:type="round"
+            android:layout_gravity="center"
+            android:scaleType="centerCrop"/>
+        <RelativeLayout
+            android:layout_marginBottom="@dimen/app_main_ome"
+            android:layout_marginLeft="@dimen/app_main_ome"
+            android:layout_marginTop="@dimen/app_main_ome"
+            android:layout_marginRight="@dimen/app_main_ome"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:id="@+id/ll_xb"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="李霞"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:textSize="@dimen/font"
+                    android:textColor="@color/black"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:src="@mipmap/icon_male"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp" />
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="20dp"
+                    android:src="@mipmap/image_vip_bg"
+                    android:layout_marginLeft="@dimen/app_main_ome"
+                    android:layout_marginTop="20dp"/>
+            </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/ll_xb"
+                android:text="事故的撒娇洛杉矶地方；啊随即发动连击阿斯蒂芬垃圾分类定级啊两地分居啊家双方的萨芬"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:gravity="center"/>
+        </RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>

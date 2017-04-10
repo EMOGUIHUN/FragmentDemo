@@ -36,7 +36,7 @@
         android:layout_centerVertical="true"
         android:textColor="@color/black"
         android:layout_marginRight="10dp"
-        android:text="更多"/>
+        android:text="更多..."/>
 
 
 </RelativeLayout>

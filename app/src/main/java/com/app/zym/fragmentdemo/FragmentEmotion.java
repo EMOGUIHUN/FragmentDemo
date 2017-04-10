@@ -19,8 +19,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
- * Created by Administrator on 2016/12/19.
+ * Created by Administrator on 2016/12/21.
  */
 
 public class FragmentEmotion extends Fragment implements OKHttpRequest.AsyncRequest {
@@ -33,23 +34,21 @@ public class FragmentEmotion extends Fragment implements OKHttpRequest.AsyncRequ
         fe.setArguments(extra);
         return fe;
     }
-
-    private OKHttpRequest ohr;
+    private ListView lvView;
     private List<EmotionInfo> mlist;
-    private ListView mList;
     private EmotionAdapter mAdapter;
     private String requestType;
-
+    private OKHttpRequest ohr;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_lv_emotion,container,false);
         ohr = new OKHttpRequest(this);
-        mList = (ListView) view.findViewById(R.id.lv_emotion);
+        lvView = (ListView) view.findViewById(R.id.lv_emotion);
         sendRequest();
         mlist = new ArrayList<>();
         mAdapter = new EmotionAdapter(getActivity(),mlist,R.layout.fragment_emotion_item);
-        mList.setAdapter(mAdapter);
+        lvView.setAdapter(mAdapter);
         return view;
     }
     private void sendRequest(){
@@ -63,13 +62,6 @@ public class FragmentEmotion extends Fragment implements OKHttpRequest.AsyncRequ
         rp.addFormDataPart("userId","");
         ohr.post(getActivity(), "http://120.25.204.7:8081/xmppinterface_tcyy/Interfaces", rp);
     }
-    /****
-     * 网络请求回调方法
-     *
-     * @param isSuccess 网络请求是否成功
-     * @param json      服务器返回的json数据
-     * @param tag       标识哪一个网络请求
-     */
     @Override
     public void callBack(boolean isSuccess, String json, int tag) {
         if(TextUtils.isEmpty(json)){
@@ -84,10 +76,15 @@ public class FragmentEmotion extends Fragment implements OKHttpRequest.AsyncRequ
                         return;
                     }
                     for(int i = 0;i<array.length();i++){
-                        JSONObject objs =array.getJSONObject(i);
-                        EmotionInfo ti = new EmotionInfo(objs);
-
-                        mlist.add(ti);
+                        JSONObject objs = array.getJSONObject(i);
+                        EmotionInfo ei = new EmotionInfo();
+                        if(objs.has("age"))ei.age = objs.getString("age");
+                        if(objs.has("name"))ei.name = objs.getString("name");
+                        if(objs.has("smallTitle"))ei.smallTitle = objs.getString("smallTitle");
+                        if(objs.has("info"))ei.info = objs.getString("info");
+                        if(objs.has("userPic"))ei.head = objs.getString("userPic");
+                        if(objs.has("pic"))ei.pic = objs.getString("pic");
+                        mlist.add(ei);
                     }
                     mAdapter.notifyDataSetChanged();
                 }

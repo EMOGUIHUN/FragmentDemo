@@ -2,7 +2,10 @@ package com.app.zym.fragmentdemo;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -12,10 +15,10 @@ import android.widget.TextView;
 
 import com.app.zym.fragmentdemo.application.MainApplication;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener,IConfig {
 
     private Fragment0 f0;
-    private Fragment1 f1;
+    private FragmentTwo f1;
     private Fragment2 f2;
     private Fragment3 f3;
     private Fragment4 f4;
@@ -31,11 +34,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private int selectPosition = 0;
 
+    private BroadcastReceiver br = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(intent== null){
+                return;
+            }
+            if(actionGoToIndex.equals(intent.getAction())){
+                Bundle data = intent.getExtras();
+                if(data == null){
+                    return;
+                }
+                int index = data.getInt("index");
+                selectPosition = index;
+                selectItem(index);
+            }
+        }
+    };
+    private void regBroadcast(){
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(actionGoToIndex);
+        registerReceiver(br,filter);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        regBroadcast();
 
         ll0 = (LinearLayout) findViewById(R.id.ll_one);
         ll1 = (LinearLayout) findViewById(R.id.ll_two);
@@ -97,12 +124,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * @param position
      */
     private void selectItem(int position){
-        resetImg();
-        fm = getFragmentManager();
+        if(fm == null){
+            fm = getFragmentManager();
+        }
         ft = fm.beginTransaction();  //开启事务
         hideFragment(ft);
         switch (position){
             case 0:
+                resetImg();
                 ibtn0.setImageResource(R.mipmap.app_bottom_one_selected);
                 tvToolbarTitle.setText("首页");
                 if (f0 == null) {
@@ -113,23 +142,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
             case 1:
+                resetImg();
                 ibtn1.setImageResource(R.mipmap.app_bottom_two_selected);
                 tvToolbarTitle.setText("情感");
                 if (f1 == null) {
-                    f1 = new Fragment1();
+                    f1 = new FragmentTwo();
                     ft.add(R.id.fl_frame, f1);
                 }else {
                     ft.show(f1);
                 }
                 break;
             case 2:
-                ibtn2.setImageResource(R.mipmap.app_bottom_three_selected);
-                tvToolbarTitle.setText("消息");
                 if(!MainApplication.isLogin()){
                     Intent intent = new Intent(MainActivity.this, LoginDemo.class);
+                    intent.putExtra("index", 2);
                     startActivity(intent);
                     return;
                 }
+                resetImg();
+                ibtn2.setImageResource(R.mipmap.app_bottom_three_selected);
+                tvToolbarTitle.setText("消息");
                 if (f2 == null) {
                     f2 = new Fragment2();
                     ft.add(R.id.fl_frame, f2);
@@ -138,6 +170,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
             case 3:
+                resetImg();
                 ibtn3.setImageResource(R.mipmap.app_bottom_four_selected);
                 tvToolbarTitle.setText("附近");
                 if (f3 == null) {
@@ -148,6 +181,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
             case 4:
+                resetImg();
                 ibtn4.setImageResource(R.mipmap.app_bottom_five_selected);
                 tvToolbarTitle.setText("我");
                 if (f4 == null) {
@@ -192,5 +226,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ibtn2.setImageResource(R.mipmap.app_bottom_three);
         ibtn3.setImageResource(R.mipmap.app_bottom_four);
         ibtn4.setImageResource(R.mipmap.app_bottom_five);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(br != null){
+            unregisterReceiver(br);
+        }
     }
 }

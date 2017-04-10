@@ -1,5 +1,6 @@
 package com.app.zym.fragmentdemo;
 
+
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,7 +11,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.app.zym.fragmentdemo.adapter.recyclerview.RVSpaceItemDecoration;
 import com.app.zym.fragmentdemo.request.RequestParams;
@@ -23,26 +23,27 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * Created by Administrator on 2016/12/9.
  */
 
-public class Fragment0 extends Fragment implements OKHttpRequest.AsyncRequest {
-    private OKHttpRequest ohr;
-    private List<OneInfo> mlist;
-    private FragmentAdapter mAdapter;
+public class Fragment0 extends Fragment implements OKHttpRequest.AsyncRequest{
     private RecyclerView rvView;
+    private List<OneInfo> mlist;
+    private OneAdapter mAdapter;
+    private OKHttpRequest ohr;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_0,container,false);
-        rvView = (RecyclerView) view.findViewById(R.id.rv_main);
         ohr = new OKHttpRequest(this);
-        sendRequest();
+        rvView  = (RecyclerView) view.findViewById(R.id.rv_main);
+        send();
         mlist = new ArrayList<>();
         int[] layouts = new int[]{R.layout.fragment_ont_item_title,R.layout.fragment_one_item_head};
-        mAdapter = new FragmentAdapter(getActivity(),mlist,layouts);
+        mAdapter = new OneAdapter(getActivity(),mlist,layouts);
         mAdapter.setLayoutType(0,3);
         rvView.addItemDecoration(new RVSpaceItemDecoration(5));
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),3);
@@ -52,7 +53,7 @@ public class Fragment0 extends Fragment implements OKHttpRequest.AsyncRequest {
         rvView.setAdapter(mAdapter);
         return view;
     }
-    public void sendRequest(){
+    public void send(){
         RequestParams rp = new RequestParams();
         rp.setTag(0);
         rp.addFormDataPart("sProcName","selectFirstPages");
@@ -75,27 +76,29 @@ public class Fragment0 extends Fragment implements OKHttpRequest.AsyncRequest {
             try {
                 JSONObject obj = new JSONObject(json);
                 if(obj.has("meinv")){
-                    JSONArray arrays = obj.getJSONArray("meinv");
-                    if(arrays ==null){
+                    JSONArray array = obj.getJSONArray("meinv");
+                    if(array==null){
                         return;
                     }
-                    List<OneInfo> listTitle = new ArrayList<>();
-                    for(int i = 0;i<arrays.length();i++){
-                        JSONObject itemObj = arrays.getJSONObject(i);
-                        if(itemObj.has("title")){
-                            OneInfo titleOne = new OneInfo();
-                            titleOne.title = itemObj.getString("title");
-                            mlist.add(titleOne);
+                    for(int i = 0;i<array.length();i++){
+                        JSONObject objs = array.getJSONObject(i);
+                        OneInfo oi = new OneInfo();
+                        if(objs.has("title")){
+                                oi.title = objs.getString("title");
+                            mlist.add(oi);
                         }
-                        if(itemObj.has("list")){
-                            JSONArray array = itemObj.getJSONArray("list");
-                            if(array==null){
+                        if(objs.has("list")){
+                            JSONArray arrays = objs.getJSONArray("list");
+                            if(arrays==null){
                                 return;
                             }
-                            for(int j = 0;j<array.length();j++){
-                                JSONObject objss = array.getJSONObject(j);
-                                OneInfo oi = new OneInfo(objss);
-                                mlist.add(oi);
+                            for(int j = 0;j<arrays.length();j++){
+                                JSONObject itemObj = arrays.getJSONObject(j);
+                                OneInfo io = new OneInfo();
+                                if(itemObj.has("name")) io.name = itemObj.getString("name");
+                                if(itemObj.has("age")) io.age = itemObj.getString("age");
+                                if(itemObj.has("header")) io.head = itemObj.getString("header");
+                                mlist.add(io);
                             }
                         }
                     }

@@ -18,6 +18,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".LoginDemo"/>
+        <activity android:name=".ActivityUserInfo"/>
+        <activity android:name=".ActivityUserInfo2"/>
     </application>
 
 </manifest>
